@@ -14,9 +14,113 @@ import {
 
 import "../styles/pos.css";
 
-// Productos de demostración.
-// Si ya tienes productos guardados en localStorage,
-// el sistema utilizará esos productos.
+const imprimirBoleta = (venta) => {
+  const ventana = window.open("", "_blank", "width=420,height=700");
+
+  if (!ventana) {
+    alert("Permite las ventanas emergentes para generar la boleta.");
+    return;
+  }
+
+  const filas = venta.productos
+    .map(
+      (producto) => `
+        <tr>
+          <td>
+            ${producto.nombre}
+            <br />
+            <small>${producto.cantidad} x S/ ${producto.precio.toFixed(2)}</small>
+          </td>
+          <td style="text-align:right">
+            S/ ${producto.subtotal.toFixed(2)}
+          </td>
+        </tr>
+      `
+    )
+    .join("");
+
+  ventana.document.write(`
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8" />
+      <title>Boleta ${venta.numeroVenta}</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          max-width: 360px;
+          margin: 20px auto;
+          padding: 10px;
+          color: #222;
+          font-size: 13px;
+        }
+        h1, h2, p { text-align: center; }
+        h1 { font-size: 22px; margin-bottom: 4px; }
+        h2 { font-size: 16px; }
+        .detalle { margin: 16px 0; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td {
+          padding: 8px 2px;
+          border-bottom: 1px dashed #bbb;
+          text-align: left;
+          vertical-align: top;
+        }
+        .total {
+          font-size: 18px;
+          font-weight: bold;
+        }
+        .derecha { text-align: right; }
+        @media print {
+          body { margin: 0 auto; }
+        }
+      </style>
+    </head>
+    <body>
+      <h1>EL BUEN VECINO</h1>
+      <p>BOLETA DE VENTA</p>
+      <hr />
+      <p><strong>Número:</strong> ${venta.numeroVenta}</p>
+      <p><strong>Fecha:</strong> ${venta.fecha}</p>
+      <p><strong>Vendedor:</strong> ${venta.vendedor}</p>
+      <p><strong>Pago:</strong> ${venta.metodoPago}</p>
+
+      <div class="detalle">
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th class="derecha">Importe</th>
+            </tr>
+          </thead>
+          <tbody>${filas}</tbody>
+        </table>
+      </div>
+
+      <p class="derecha">Subtotal: S/ ${venta.subtotal.toFixed(2)}</p>
+      <p class="derecha total">TOTAL: S/ ${venta.total.toFixed(2)}</p>
+      ${
+        venta.metodoPago === "Efectivo"
+          ? `
+            <p class="derecha">Recibido: S/ ${venta.dineroRecibido.toFixed(2)}</p>
+            <p class="derecha">Vuelto: S/ ${venta.vuelto.toFixed(2)}</p>
+          `
+          : ""
+      }
+
+      <hr />
+      <p>¡Gracias por tu compra!</p>
+      <script>
+        window.onload = () => {
+          window.print();
+        };
+      <\/script>
+    </body>
+    </html>
+  `);
+
+  ventana.document.close();
+};
+
 const productosIniciales = [
   {
     id: 1,
@@ -550,6 +654,10 @@ function PuntoVentaPage({ usuario }) {
     setMensaje(
       `Venta ${nuevaVenta.numeroVenta} registrada correctamente.`
     );
+
+    setTimeout(() => {
+  imprimirBoleta(nuevaVenta);
+}, 300);
 
     // Quitar mensaje después de unos segundos
     setTimeout(() => {

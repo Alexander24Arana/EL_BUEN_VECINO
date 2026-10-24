@@ -1,0 +1,277 @@
+.reports-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  color: #1e293b;
+}
+
+.reports-heading h2 {
+  margin: 8px 0;
+  font-size: 28px;
+  font-weight: 750;
+}
+
+.reports-heading p {
+  margin: 0;
+  color: #64748b;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #64748b;
+}
+
+.reports-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.report-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  background: white;
+  border: 1px solid #e8edf3;
+  border-radius: 14px;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.035);
+  min-width: 0;
+}
+
+.report-card > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.report-card span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.report-card strong {
+  color: #172033;
+  font-size: 22px;
+  overflow-wrap: anywhere;
+}
+
+.report-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+}
+
+.report-icon.blue {
+  color: #2563eb;
+  background: #eff6ff;
+}
+
+.report-icon.green {
+  color: #16a34a;
+  background: #f0fdf4;
+}
+
+.report-icon.purple {
+  color: #7c3aed;
+  background: #f5f3ff;
+}
+
+.report-icon.orange {
+  color: #ea580c;
+  background: #fff7ed;
+}
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.report-panel {
+  min-width: 0;
+  background: white;
+  border: 1px solid #e8edf3;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.035);
+}
+
+.report-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.report-panel-header h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+}
+
+.report-panel-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.report-panel-header > svg {
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.report-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 32px 12px;
+  color: #64748b;
+}
+
+.report-empty strong {
+  color: #334155;
+}
+
+.report-empty span {
+  max-width: 290px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.report-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+
+.report-table th {
+  color: #64748b;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  background: #f8fafc;
+}
+
+.report-table th,
+.report-table td {
+  padding: 13px 10px;
+  border-bottom: 1px solid #edf1f5;
+  white-space: nowrap;
+}
+
+.report-table td strong {
+  color: #15803d;
+}
+
+.low-stock-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.low-stock-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid #edf1f5;
+}
+
+.low-stock-item > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.low-stock-item > div strong {
+  overflow-wrap: anywhere;
+}
+
+.low-stock-item span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.low-stock-number {
+  color: #dc2626;
+  background: #fef2f2;
+  padding: 8px 12px;
+  border-radius: 9px;
+}
+
+.reports-info {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 18px;
+  border: 1px solid #dbeafe;
+  background: #f8fbff;
+  border-radius: 12px;
+  color: #2563eb;
+}
+
+.reports-info svg {
+  flex-shrink: 0;
+}
+
+.reports-info strong {
+  color: #1e3a8a;
+}
+
+.reports-info p {
+  margin: 6px 0 0;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@media (max-width: 1100px) {
+  .reports-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reports-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .reports-page {
+    padding: 14px;
+    gap: 16px;
+  }
+
+  .reports-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .report-card {
+    padding: 16px;
+  }
+
+  .report-panel {
+    padding: 16px;
+  }
+
+  .reports-heading h2 {
+    font-size: 24px;
+  }
+}

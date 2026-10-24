@@ -18,6 +18,7 @@ import InventarioPage from "./pages/InventarioPage";
 import PuntoVentaPage from "./pages/PuntoVentaPage";
 import UsuariosPage from "./pages/UsuariosPage";
 import logo from "./assets/logo.png";
+import ReportesPage from "./pages/ReportesPage";
 
 import usuariosIniciales from "./data/users";
 
@@ -475,18 +476,10 @@ function App() {
       );
     }
 
-    // REPORTES
-
+    // REPORTE
     if (pagina === "reportes") {
-
       if (usuario.rol === "Administrador") {
-        return (
-          <ModuloTemporal
-            titulo="Reportes"
-            descripcion="Aquí podrás consultar reportes de ventas, inventario y caja."
-            icono="📊"
-          />
-        );
+        return <ReportesPage />;
       }
 
       return (
@@ -499,7 +492,6 @@ function App() {
     }
 
     // PÁGINA DESCONOCIDA
-
     return <Dashboard />;
   };
 

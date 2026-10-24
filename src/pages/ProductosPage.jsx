@@ -19,7 +19,7 @@ import categoriasIniciales from "../data/categories";
 function ProductosPage({ usuario }) {
   const [productos, setProductos] = useState(() => {
     try {
-      const guardados = sessionStorage.getItem("productos_bodega");
+      const guardados = localStorage.getItem("productos");
 
       return guardados
         ? JSON.parse(guardados)
@@ -59,10 +59,10 @@ function ProductosPage({ usuario }) {
 
   useEffect(() => {
     try {
-      sessionStorage.setItem(
-        "productos_bodega",
-        JSON.stringify(productos)
-      );
+      localStorage.setItem(
+  "productos",
+  JSON.stringify(productos)
+);
     } catch (error) {
       console.error(
         "Error al guardar productos:",
@@ -366,12 +366,10 @@ function ProductosPage({ usuario }) {
           )
         : [...productos, nuevo];
 
-    sessionStorage.setItem(
-      "productos_bodega",
-      JSON.stringify(
-        productosActualizados
-      )
-    );
+    localStorage.setItem(
+  "productos",
+  JSON.stringify(productos)
+);
 
     // Avisar a Inventario
     notificarProductosActualizados();
@@ -420,12 +418,10 @@ function ProductosPage({ usuario }) {
       productosActualizados
     );
 
-    sessionStorage.setItem(
-      "productos_bodega",
-      JSON.stringify(
-        productosActualizados
-      )
-    );
+    localStorage.setItem(
+  "productos",
+  JSON.stringify(productos)
+);
 
     notificarProductosActualizados();
   };

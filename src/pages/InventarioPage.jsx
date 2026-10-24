@@ -63,16 +63,21 @@ function InventarioPage({ usuario }) {
   }, []);
 
 
-  const cargarProductos = () => {
-    const guardados =
-      sessionStorage.getItem("productos_bodega");
+ const cargarProductos = () => {
+  try {
+    const guardados = localStorage.getItem("productos");
 
     if (guardados) {
-      setProductos(JSON.parse(guardados));
+      const datos = JSON.parse(guardados);
+      setProductos(Array.isArray(datos) ? datos : []);
     } else {
       setProductos([]);
     }
-  };
+  } catch (error) {
+    console.error("Error al cargar productos:", error);
+    setProductos([]);
+  }
+};
 
 
   // ==========================================
