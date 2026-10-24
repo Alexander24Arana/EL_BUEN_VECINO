@@ -570,6 +570,15 @@ const ventanaBoleta = window.open(
     const ventasGuardadas =
       JSON.parse(localStorage.getItem("ventas")) || [];
 
+      const ventanaBoleta = window.open("about:blank", "_blank");
+
+if (!ventanaBoleta) {
+  alert(
+    "Chrome bloqueó la boleta. Permite las ventanas emergentes para este sitio."
+  );
+  return;
+}
+
     const nuevaVenta = {
       id:
         Date.now(),
