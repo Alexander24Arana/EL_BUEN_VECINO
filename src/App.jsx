@@ -17,6 +17,7 @@ import ProductosPage from "./pages/ProductosPage";
 import InventarioPage from "./pages/InventarioPage";
 import PuntoVentaPage from "./pages/PuntoVentaPage";
 import UsuariosPage from "./pages/UsuariosPage";
+import logo from "./assets/logo.png";
 
 import usuariosIniciales from "./data/users";
 
@@ -647,13 +648,12 @@ function Login({ onLogin }) {
 
         <div className="login-brand">
 
-          <div className="brand-icon">
-            <Store size={48} />
+          <div className="brand-logo">
+            <img
+              src={logo}
+              alt="Bodega El Buen Vecino - Sistema de gestión de ventas e inventario"
+            />
           </div>
-
-          <h1>
-            El Buen Vecino
-          </h1>
 
           <p>
             Sistema web para la gestión
@@ -696,7 +696,10 @@ function Login({ onLogin }) {
         <div className="login-box">
 
           <div className="mobile-logo">
-            <Store size={35} />
+            <img
+              src={logo}
+              alt="Bodega El Buen Vecino"
+            />
           </div>
 
           <span className="system-label">
