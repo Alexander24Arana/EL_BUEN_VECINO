@@ -14,8 +14,10 @@ import {
 
 import "../styles/pos.css";
 
-const imprimirBoleta = (venta) => {
-  const ventana = window.open("", "_blank", "width=420,height=700");
+const imprimirBoleta = (venta, ventanaExistente = null) => {
+  const ventana =
+  ventanaExistente ||
+  window.open("", "_blank", "width=420,height=700");
 
   if (!ventana) {
     alert("Permite las ventanas emergentes para generar la boleta.");
@@ -491,6 +493,11 @@ function PuntoVentaPage({ usuario }) {
   // ---------------------------------------------------------
   // COMPLETAR VENTA
   // ---------------------------------------------------------
+const ventanaBoleta = window.open(
+  "",
+  "_blank",
+  "width=420,height=700"
+);
 
   const completarVenta = () => {
     setError("");
@@ -655,7 +662,7 @@ function PuntoVentaPage({ usuario }) {
       `Venta ${nuevaVenta.numeroVenta} registrada correctamente.`
     );
 
-    imprimirBoleta(nuevaVenta);
+  imprimirBoleta(nuevaVenta, ventanaBoleta);
 
     // Quitar mensaje después de unos segundos
     setTimeout(() => {
