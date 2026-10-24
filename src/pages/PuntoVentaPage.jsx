@@ -14,115 +14,6 @@ import {
 
 import "../styles/pos.css";
 
-const imprimirBoleta = (venta, ventanaExistente = null) => {
-  const ventana =
-  ventanaExistente ||
-  window.open("", "_blank", "width=420,height=700");
-
-  if (!ventana) {
-    alert("Permite las ventanas emergentes para generar la boleta.");
-    return;
-  }
-
-  const filas = venta.productos
-    .map(
-      (producto) => `
-        <tr>
-          <td>
-            ${producto.nombre}
-            <br />
-            <small>${producto.cantidad} x S/ ${producto.precio.toFixed(2)}</small>
-          </td>
-          <td style="text-align:right">
-            S/ ${producto.subtotal.toFixed(2)}
-          </td>
-        </tr>
-      `
-    )
-    .join("");
-
-  ventana.document.write(`
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-      <meta charset="UTF-8" />
-      <title>Boleta ${venta.numeroVenta}</title>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          max-width: 360px;
-          margin: 20px auto;
-          padding: 10px;
-          color: #222;
-          font-size: 13px;
-        }
-        h1, h2, p { text-align: center; }
-        h1 { font-size: 22px; margin-bottom: 4px; }
-        h2 { font-size: 16px; }
-        .detalle { margin: 16px 0; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td {
-          padding: 8px 2px;
-          border-bottom: 1px dashed #bbb;
-          text-align: left;
-          vertical-align: top;
-        }
-        .total {
-          font-size: 18px;
-          font-weight: bold;
-        }
-        .derecha { text-align: right; }
-        @media print {
-          body { margin: 0 auto; }
-        }
-      </style>
-    </head>
-    <body>
-      <h1>EL BUEN VECINO</h1>
-      <p>BOLETA DE VENTA</p>
-      <hr />
-      <p><strong>Número:</strong> ${venta.numeroVenta}</p>
-      <p><strong>Fecha:</strong> ${venta.fecha}</p>
-      <p><strong>Vendedor:</strong> ${venta.vendedor}</p>
-      <p><strong>Pago:</strong> ${venta.metodoPago}</p>
-
-      <div class="detalle">
-        <table>
-          <thead>
-            <tr>
-              <th>Producto</th>
-              <th class="derecha">Importe</th>
-            </tr>
-          </thead>
-          <tbody>${filas}</tbody>
-        </table>
-      </div>
-
-      <p class="derecha">Subtotal: S/ ${venta.subtotal.toFixed(2)}</p>
-      <p class="derecha total">TOTAL: S/ ${venta.total.toFixed(2)}</p>
-      ${
-        venta.metodoPago === "Efectivo"
-          ? `
-            <p class="derecha">Recibido: S/ ${venta.dineroRecibido.toFixed(2)}</p>
-            <p class="derecha">Vuelto: S/ ${venta.vuelto.toFixed(2)}</p>
-          `
-          : ""
-      }
-
-      <hr />
-      <p>¡Gracias por tu compra!</p>
-      <script>
-        window.onload = () => {
-          window.print();
-        };
-      <\/script>
-    </body>
-    </html>
-  `);
-
-  ventana.document.close();
-};
-
 const productosIniciales = [
   {
     id: 1,
@@ -199,6 +90,7 @@ function PuntoVentaPage({ usuario }) {
   const [dineroRecibido, setDineroRecibido] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [error, setError] = useState("");
+  const [boletaActual, setBoletaActual] = useState(null);
 
   // ---------------------------------------------------------
   // OBTENER PRECIO
@@ -493,11 +385,6 @@ function PuntoVentaPage({ usuario }) {
   // ---------------------------------------------------------
   // COMPLETAR VENTA
   // ---------------------------------------------------------
-const ventanaBoleta = window.open(
-  "",
-  "_blank",
-  "width=420,height=700"
-);
 
   const completarVenta = () => {
     setError("");
@@ -569,15 +456,6 @@ const ventanaBoleta = window.open(
 
     const ventasGuardadas =
       JSON.parse(localStorage.getItem("ventas")) || [];
-
-      const ventanaBoleta = window.open("about:blank", "_blank");
-
-if (!ventanaBoleta) {
-  alert(
-    "Chrome bloqueó la boleta. Permite las ventanas emergentes para este sitio."
-  );
-  return;
-}
 
     const nuevaVenta = {
       id:
@@ -671,7 +549,7 @@ if (!ventanaBoleta) {
       `Venta ${nuevaVenta.numeroVenta} registrada correctamente.`
     );
 
-  imprimirBoleta(nuevaVenta, ventanaBoleta);
+    setBoletaActual(nuevaVenta);
 
     // Quitar mensaje después de unos segundos
     setTimeout(() => {
@@ -720,6 +598,151 @@ if (!ventanaBoleta) {
           <span>{mensaje}</span>
         </div>
       )}
+
+      
+{boletaActual && (
+  <>
+    <style>{`
+      @media print {
+        body * {
+          visibility: hidden !important;
+        }
+
+        .boleta-imprimible,
+        .boleta-imprimible * {
+          visibility: visible !important;
+        }
+
+        .boleta-imprimible {
+          position: absolute !important;
+          left: 0 !important;
+          top: 0 !important;
+          width: 100% !important;
+          max-width: 380px !important;
+          margin: 0 !important;
+          padding: 16px !important;
+          background: white !important;
+          color: black !important;
+          box-shadow: none !important;
+        }
+
+        .no-imprimir {
+          display: none !important;
+        }
+      }
+    `}</style>
+
+    <div
+      className="boleta-imprimible"
+      style={{
+        background: "#fff",
+        color: "#222",
+        maxWidth: "420px",
+        margin: "24px auto",
+        padding: "24px",
+        border: "1px solid #ddd",
+        borderRadius: "8px",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <h2 style={{ textAlign: "center" }}>
+        EL BUEN VECINO
+      </h2>
+
+      <p style={{ textAlign: "center" }}>
+        BOLETA DE VENTA
+      </p>
+
+      <hr />
+
+      <p><strong>Número:</strong> {boletaActual.numeroVenta}</p>
+      <p><strong>Fecha:</strong> {boletaActual.fecha}</p>
+      <p><strong>Vendedor:</strong> {boletaActual.vendedor}</p>
+      <p><strong>Pago:</strong> {boletaActual.metodoPago}</p>
+
+      <hr />
+
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            <th style={{ textAlign: "left", padding: "8px 0" }}>
+              Producto
+            </th>
+            <th style={{ textAlign: "right", padding: "8px 0" }}>
+              Importe
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {boletaActual.productos.map((producto, indice) => (
+            <tr key={`${producto.id}-${indice}`}>
+              <td style={{ padding: "8px 0", borderBottom: "1px dashed #ccc" }}>
+                {producto.nombre}
+                <br />
+                <small>
+                  {producto.cantidad} x S/ {producto.precio.toFixed(2)}
+                </small>
+              </td>
+
+              <td style={{ textAlign: "right", borderBottom: "1px dashed #ccc" }}>
+                S/ {producto.subtotal.toFixed(2)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <p style={{ textAlign: "right" }}>
+        Subtotal: S/ {boletaActual.subtotal.toFixed(2)}
+      </p>
+
+      <h3 style={{ textAlign: "right" }}>
+        TOTAL: S/ {boletaActual.total.toFixed(2)}
+      </h3>
+
+      {boletaActual.metodoPago === "Efectivo" && (
+        <>
+          <p style={{ textAlign: "right" }}>
+            Recibido: S/ {boletaActual.dineroRecibido.toFixed(2)}
+          </p>
+          <p style={{ textAlign: "right" }}>
+            Vuelto: S/ {boletaActual.vuelto.toFixed(2)}
+          </p>
+        </>
+      )}
+
+      <hr />
+
+      <p style={{ textAlign: "center" }}>
+        ¡Gracias por tu compra!
+      </p>
+
+      <div
+        className="no-imprimir"
+        style={{
+          display: "flex",
+          gap: "10px",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          marginTop: "20px",
+        }}
+      >
+        <button type="button" onClick={() => window.print()}>
+          Imprimir / Guardar como PDF
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setBoletaActual(null)}
+        >
+          Volver al punto de venta
+        </button>
+      </div>
+    </div>
+  </>
+)}
+
 
       {/* MENSAJE DE ERROR */}
       {error && (
