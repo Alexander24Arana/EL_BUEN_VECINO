@@ -524,19 +524,11 @@ function App() {
         <header className="header">
 
           <div className="header-title">
-
-            <Store size={25} />
-
-            <div>
-              <strong>
-                El Buen Vecino
-              </strong>
-
-              <span>
-                Sistema de gestión
-              </span>
-            </div>
-
+            <img
+              className="header-logo"
+              src={logo}
+              alt="Bodega El Buen Vecino"
+            />
           </div>
 
           <div className="usuario">

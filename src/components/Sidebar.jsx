@@ -8,6 +8,7 @@ import {
   LogOut,
   Store,
 } from "lucide-react";
+import logo from "../assets/logo.png";
 
 function Sidebar({ pagina, setPagina, usuario, cerrarSesion }) {
   const esAdministrador =
@@ -29,16 +30,10 @@ function Sidebar({ pagina, setPagina, usuario, cerrarSesion }) {
       {/* LOGO */}
 
       <div className="sidebar-logo">
-
-        <div className="sidebar-logo-icon">
-          <Store size={24} />
-        </div>
-
-        <div>
-          <strong>El Buen Vecino</strong>
-          <span>Bodega</span>
-        </div>
-
+        <img
+          src={logo}
+          alt="Bodega El Buen Vecino"
+        />
       </div>
 
       {/* USUARIO */}
