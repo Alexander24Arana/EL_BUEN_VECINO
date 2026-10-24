@@ -655,9 +655,7 @@ function PuntoVentaPage({ usuario }) {
       `Venta ${nuevaVenta.numeroVenta} registrada correctamente.`
     );
 
-    setTimeout(() => {
-  imprimirBoleta(nuevaVenta);
-}, 300);
+    imprimirBoleta(nuevaVenta);
 
     // Quitar mensaje después de unos segundos
     setTimeout(() => {
